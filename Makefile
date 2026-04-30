@@ -1,9 +1,16 @@
 CXX      = g++
-CXXFLAGS = -std=c++17 -O2 -Wall
-LDFLAGS  = -lpthread
+CXXFLAGS = -std=c++17 -Wall
+LDFLAGS  = -pthread
 
-TARGET   = forger_table
-SRC      = main.cpp
+TARGET = odyssey_os
+
+SRC = main.cpp \
+      cryptex_boss.cpp \
+      celluloid_app.cpp \
+      word_pyramid.cpp \
+      wordle.cpp \
+      game.cpp \
+      puzzle.cpp
 
 all: $(TARGET)
 
