@@ -1,62 +1,104 @@
 #include <iostream>
 #include <string>
-#include <cstdlib>
 #include <ctime>
-#include "celluloid_app.h"
+#include "cryptex_boss.h"
 
 using namespace std;
 
-/**
- * Displays the main boot sequence for Odyssey OS.
- * Inputs: None
- * Outputs: Prints ASCII art and system messages to the console.
- */
-static void directorsBootSequence() {
-    cout << "\033[1;32m"; // Set text to bold green
-    cout << "==========================================\n";
-    cout << "        ODYSSEY OS: TERMINAL v2.4       \n";
-    cout << "==========================================\n";
-    cout << "[SYSTEM] Booting secure database...\n";
-    cout << "[SYSTEM] Decryption protocols online.\n";
-    cout << "\033[0m"; // Reset formatting
+// Unlock condition
+bool isCryptexUnlocked(bool game1Done,
+                       bool game2Done,
+                       bool game3Done)
+{
+    return game1Done && game2Done && game3Done;
 }
 
-/**
- * Main entry point. Handles the menu loop and dynamic memory for apps.
- */
-int runDirectorsArchiveApp() {
-    srand(time(0)); // Seed random number generator
-    directorsBootSequence();
+int main()
+{
+    srand(time(0)); // seed random once
 
-    int difficulty = 2; // Default to Medium
+    bool crosswordDone = false;
+    bool wordleDone = false;
+    bool louvreDone = false;
 
-    cout << "\nSelect Profile:\n1. Intern (Easy)\n2. Archivist (Medium)\n3. Master Curator (Hard)\n> ";
-    cin >> difficulty;
+    int choice;
+    string mode;
 
-    bool systemRunning = true;
+    while (true)
+    {
+        cout << endl;
+        cout << "==================================" << endl;
+        cout << "        ODYSSEY ARCHIVE           " << endl;
+        cout << "==================================" << endl;
 
-    while (systemRunning) {
-        cout << "\n\033[1;36m--- ODYSSEY OS MAIN MENU ---\033[0m\n";
-        cout << "1. The Director's Archive (Celluloid Citadel)\n";
-        cout << "2. Exit System\n";
-        cout << "Select App > ";
+        cout << "1. Crossword" << endl;
+        cout << "2. Wordle" << endl;
+        cout << "3. Louvre App" << endl;
 
-        int choice;
+        if (isCryptexUnlocked(crosswordDone,
+                              wordleDone,
+                              louvreDone))
+        {
+            cout << "4. Curator's Cryptex" << endl;
+        }
+        else
+        {
+            cout << "4. Curator's Cryptex (LOCKED)" << endl;
+        }
+
+        cout << "0. Exit" << endl;
+        cout << endl;
+        cout << "Select an option: ";
+
         cin >> choice;
+        cin.ignore();
 
-        if (choice == 1) {
-            // DYNAMIC MEMORY REQUIREMENT: Allocate app on the heap
-            CelluloidApp* app2 = new CelluloidApp(difficulty);
-            app2->run();
-            
-            // DYNAMIC MEMORY REQUIREMENT: Free memory when app closes
-            delete app2;
-        } else if (choice == 2) {
-            cout << "Logging off...\n";
-            systemRunning = false;
-        } else {
-            cout << "\033[1;31m [ERROR] Invalid command.\033[0m\n"; // Red error text
+        if (choice == 0)
+        {
+            cout << "Exiting program..." << endl;
+            break;
+        }
+
+        if (choice == 1)
+        {
+            cout << "Crossword completed." << endl;
+            crosswordDone = true;
+        }
+        else if (choice == 2)
+        {
+            cout << "Wordle completed." << endl;
+            wordleDone = true;
+        }
+        else if (choice == 3)
+        {
+            cout << "Louvre App completed." << endl;
+            louvreDone = true;
+        }
+        else if (choice == 4)
+        {
+            if (isCryptexUnlocked(crosswordDone,
+                                  wordleDone,
+                                  louvreDone))
+            {
+                cout << endl;
+                cout << "Select difficulty (easy / medium / hard): ";
+
+                getline(cin, mode);
+
+                runCryptexBoss(mode);
+            }
+            else
+            {
+                cout << endl;
+                cout << "Cryptex is locked." << endl;
+                cout << "Complete the other archives first." << endl;
+            }
+        }
+        else
+        {
+            cout << "Invalid choice." << endl;
         }
     }
+
     return 0;
 }
